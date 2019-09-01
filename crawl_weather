@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+
+import click
+from web_crawl.forecast_type.today import TodaysWeather
+from web_crawl.forecast_type.hourly import HourlyWeather
+from web_crawl.forecast_type.fifteen_days import FifteenDaysWeather
+from web_crawl.utils import todays_date
+from time import sleep
+from tqdm import tqdm
+
+
+@click.command()
+@click.option('--location', required=True, default="bangalore",
+              help="Enter the location to find about it", show_default=True)
+@click.option('--date', help="Enter the date in YYYY-MM-DD format in order to get the temperature")
+@click.option('--forecast_type', type=click.Choice(["today", "hourly", "fifteenday"]),
+              help="Available forecast types are - today, hourly, fifteenday")
+def get_weather(location, date, forecast_type):
+    click.echo("Hi there, please enter the below details inorder for the temperature")
+    click.echo("Location is mandatory")
+    location = click.prompt("Please enter the location", type=str)
+    date = click.prompt("Please enter the date in YYYY-MM-DD format", default=todays_date())
+    forecast_type = click.prompt("Forecast Types are - today, hourly, fifteenday", default="today",
+                                 show_choices=True)
+    if forecast_type == "today":
+        try:
+            weather = TodaysWeather(location, date)
+            output = weather.parse()
+        except Exception as e:
+            print(f"Oops the location not found hence breaking Try Bangalore")
+            return
+        for i in tqdm(range(int(5))):
+            sleep(.5)
+        print(f"The today's temperature in {output['location']} is {output['Temperature']} C")
+    elif forecast_type == "hourly":
+        try:
+            hourly_weather = HourlyWeather(location)
+            hourly_output = hourly_weather.parse()
+        except Exception as e:
+            print(f"Oops the location not found hence serving Bangalore's today's temperature")
+            return
+        for i in tqdm(range(int(5))):
+            sleep(.5)
+        for time, temp in hourly_output.items():
+            print(f"{time} - {temp} C")
+    elif forecast_type == "fifteenday":
+        try:
+            fifteen_days_weather = FifteenDaysWeather(location)
+            output = fifteen_days_weather.parse()
+        except Exception as e:
+            print(f"Oops the location not found hence serving Bangalore's fifteen days temperature")
+            return
+        for i in tqdm(range(int(5))):
+            sleep(.5)
+        for date, day, temp_max, temp_min in output:
+            print(f"{date}, {day}, Max Temperature = {temp_max}, Min Temperature = {temp_min}")
+    else:
+        print("Invalid output hence displaying Today's temperature")
+
+
+if __name__ == "__main__":
+    get_weather()
