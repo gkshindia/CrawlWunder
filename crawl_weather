@@ -16,6 +16,7 @@ from tqdm import tqdm
 @click.option('--forecast_type', type=click.Choice(["today", "hourly", "fifteenday"]),
               help="Available forecast types are - today, hourly, fifteenday")
 def get_weather(location, date, forecast_type):
+    click.echo("In order to quit at any moment type CTRL+C and press enter")
     click.echo("Hi there, please enter the below details inorder for the temperature")
     click.echo("Location is mandatory")
     location = click.prompt("Please enter the location", type=str)
