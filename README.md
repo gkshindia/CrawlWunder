@@ -12,4 +12,4 @@ Inorder to run the package as it is not been uploaded in Pypi
 
 you need to cd into the project root folder and run
 
-python crawl_weather
+<code>python crawl_weather</code>
