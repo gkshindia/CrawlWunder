@@ -12,3 +12,23 @@ inorder to run the package.
 You need to cd into the project root folder and run the below snippet
 
 <code>python crawl_weather</code>
+
+### API
+
+The project folder contains the REST API, which could be run from the below comman
+by cd'ing into the root directory
+
+<code> python manage.py run </code>
+
+The base example url is 
+
+```{url}/weather?location=bangalore&forecast=hourly&date=2019-09-03```
+
+[Note]
+* location is mandatory
+* forecast and date are optional, 
+  * default forecast=today
+  * default date = Local Todays' date
+
+
+
