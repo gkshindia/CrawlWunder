@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from flask_restful import Resource, Api
 from project.api.utils import params_not_none, is_params_valid, GetWeather
 from web_crawl.utils import todays_date
@@ -10,7 +10,10 @@ api = Api(weather_blueprint)
 
 class WeatherResource(Resource):
 
-    def get(self, location, forecast_type=None, date=None):
+    def get(self):
+        location = request.args.get("location")
+        forecast_type = request.args.get("forecast")
+        date = request.args.get("date")
         response_object = {
             "status": "fail",
             "message": "Ooops you are wandering into the unknown area to me, where Satellites can't get you"
@@ -37,5 +40,15 @@ class WeatherResource(Resource):
             return response_object, 404
 
 
-api.add_resource(WeatherResource, '/<forecast_type>/<location>/<date>',
-                 '/<location>', '<forecast_type>/<location>')
+class WeatherPing(Resource):
+
+    def get(self, location, forecast_type, date):
+        return{
+            "location": location,
+            "forecast_type": forecast_type,
+            "date": date
+        }
+
+
+api.add_resource(WeatherResource, '')
+api.add_resource(WeatherPing, '/ping/<forecast_type>/<location>/<date>')

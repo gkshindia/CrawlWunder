@@ -17,3 +17,6 @@ class TestAPIService(BaseTestCase):
         self.assertIn("bangalore", data['location'])
         self.assertIn("hourly", data['forecast_type'])
         self.assertIn("2012-12-12", data['date'])
+
+    def test_no_location(self):
+        response = self.client.get()
