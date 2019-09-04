@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-
 import click
-
+from web_crawl.forecast_type.weather_crawler import WeatherDetails
 from web_crawl.utils import todays_date
 from time import sleep
 from tqdm import tqdm

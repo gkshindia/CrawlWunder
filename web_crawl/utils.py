@@ -1,7 +1,14 @@
 from datetime import date
 import json
+import re
 from web_crawl.config import BaseConfig
 import requests
+
+
+def remove_deg(temp):
+    temperature = temp.strip('\n')
+    temperature = int(re.sub("[^0-9]", '', temperature))
+    return temperature
 
 
 def todays_date():
