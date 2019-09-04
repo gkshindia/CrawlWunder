@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+
+import click
+from web_crawl.forecast_type.weather_crawler import WeatherDetails
+from web_crawl.utils import todays_date
+
+
+@click.group()
+def weather():
+    click.echo("In order to quit at any moment type CTRL+C and press enter")
+    click.echo("Hi there, please enter the below details inorder for the temperature")
+    click.echo("Location is mandatory")
+
+
+@weather.command('today')
+@click.option('--location', required=True, default="bangalore",
+              help="Enter the location to find about it", show_default=True)
+@click.option('--date', help="Enter the date in YYYY-MM-DD format in order to get the temperature")
+def today(location, date=todays_date()):
+    temp_detail = WeatherDetails(location=location, date=date).today_temp()
+    if temp_detail['temp_hi'] is None:
+        temp_detail['temp_hi'] = "--"
+    if temp_detail['temp_lo'] is None:
+        temp_detail['temp_lo'] = "--"
+    print(f"Date: {temp_detail['date']} {temp_detail['month']} {temp_detail['year']} ,"
+          f" Temperature: {temp_detail['temp_hi']} deg C / {temp_detail['temp_lo']} deg C")
+
+
+@weather.command("hourly")
+@click.option('--location', required=True, default="bangalore",
+              help="Enter the location to find about it", show_default=True)
+def hourly(location):
+    temp_by_hour = WeatherDetails(location).temp_by_hour()
+    for hour, temp in temp_by_hour.items():
+        print(f"Time: {hour}, Temperature: {temp}")
+
+
+@weather.command("5day")
+@click.option('--location', required=True, default="bangalore",
+              help="Enter the location to find about it", show_default=True)
+def five_day(location):
+    temp_for_five_day = WeatherDetails(location).five_day_temp()
+    for items in temp_for_five_day:
+        if items['temp_hi'] is None:
+            items['temp_hi'] = "--"
+        if items['temp_lo'] is None:
+            items['temp_lo'] = "--"
+        print(f"Day: {items['date']} {items['month']} {items['year']}, "
+              f"Temperature: {items['temp_hi']} degC / {items['temp_lo']}")
+
+
+@weather.command("10day")
+@click.option('--location', required=True, default="bangalore",
+              help="Enter the location to find about it", show_default=True)
+def ten_day(location):
+    temp_for_ten_day = WeatherDetails(location).ten_day_temp()
+    for items in temp_for_ten_day:
+        if items['temp_hi'] is None:
+            items['temp_hi'] = "--"
+        if items['temp_lo'] is None:
+            items['temp_lo'] = "--"
+        print(f"Day: {items['date']} {items['month']} {items['year']}, "
+              f"Temperature: {items['temp_hi']} degC / {items['temp_lo']}")
+
+
+@weather.command("month")
+@click.option('--location', required=True, default="bangalore",
+              help="Enter the location to find about it", show_default=True)
+def month(location):
+    temp_for_month = WeatherDetails(location).monthly_temp()
+    for items in temp_for_month:
+        if items['temp_hi'] is None:
+            items['temp_hi'] = "--"
+        if items['temp_lo'] is None:
+            items['temp_lo'] = "--"
+        print(f"Day: {items['date']} {items['month']} {items['year']}, "
+              f"Temperature: {items['temp_hi']} degC / {items['temp_lo']}")
+
+
+if __name__ == "__main__":
+    weather()
