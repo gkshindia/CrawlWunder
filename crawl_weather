@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 import click
-from web_crawl.forecast_type.today import TodaysWeather
-from web_crawl.forecast_type.hourly import HourlyWeather
-from web_crawl.forecast_type.fifteen_days import FifteenDaysWeather
+
 from web_crawl.utils import todays_date
 from time import sleep
 from tqdm import tqdm

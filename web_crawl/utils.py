@@ -47,6 +47,8 @@ def extract_place_id(response):
     resp = json.loads(response_decoded)
     location['address'] = resp['location']['address'][0]
     location['placeId'] = resp['location']['placeId'][0]
+    location['latitude'] = resp['location']['latitude'][0]
+    location['longitude'] = resp['location']['longitude'][0]
     return location
 
 

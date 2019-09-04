@@ -1,9 +1,5 @@
 from datetime import datetime
 from flask import jsonify
-from web_crawl.forecast_type.today import TodaysWeather
-from web_crawl.forecast_type.hourly import HourlyWeather
-from web_crawl.forecast_type.fifteen_days import FifteenDaysWeather
-
 
 FORECAST_TYPES = ["hourly", "today", "fifteenday"]
 
